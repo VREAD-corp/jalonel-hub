@@ -95,8 +95,7 @@ function card(l, s) {
   const meta = [where, l === 'fr' ? `site en ${LANG_FR[s.lang]}` : `site in ${LANG_EN[s.lang]}`].filter(Boolean).join(' · ');
   return `        <li class="card">
           <h4><a class="go" href="${url(s)}" hreflang="${s.lang}">${esc(s.name)}</a></h4>
-          <p class="meta">${esc(meta)}</p>
-          <p class="desc">${esc(s[l])}</p>
+${l === 'fr' && s.group.startsWith('fr-') ? '' : `          <p class="meta">${esc(meta)}</p>\n`}          <p class="desc">${esc(s[l])}</p>
           <p class="host"><a href="${url(s)}" hreflang="${s.lang}">${s.sub}.jalonel.com</a></p>
         </li>`;
 }
