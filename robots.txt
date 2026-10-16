@@ -1,0 +1,25 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://jalonel.com/sitemap.xml
+Sitemap: https://qualiopi.jalonel.com/sitemap.xml
+Sitemap: https://ao-formation.jalonel.com/sitemap.xml
+Sitemap: https://gpsr.jalonel.com/sitemap.xml
+Sitemap: https://appseuil.jalonel.com/sitemap.xml
+Sitemap: https://accessibilite.jalonel.com/sitemap.xml
+Sitemap: https://charte-ia.jalonel.com/sitemap.xml
+Sitemap: https://visibilite-ia.jalonel.com/sitemap.xml
+Sitemap: https://marques.jalonel.com/sitemap.xml
+Sitemap: https://lot-repere.jalonel.com/sitemap.xml
+Sitemap: https://sans-tic.jalonel.com/sitemap.xml
+Sitemap: https://courrier.jalonel.com/sitemap.xml
+Sitemap: https://tcf-canada.jalonel.com/sitemap.xml
+Sitemap: https://ao-afrique.jalonel.com/sitemap.xml
+Sitemap: https://pieces-en-ordre.jalonel.com/sitemap.xml
+Sitemap: https://dollar-filer.jalonel.com/sitemap.xml
+Sitemap: https://dpdp.jalonel.com/sitemap.xml
+Sitemap: https://deutschdrill.jalonel.com/sitemap.xml
+Sitemap: https://handa.jalonel.com/sitemap.xml
+Sitemap: https://candado.jalonel.com/sitemap.xml
+Sitemap: https://puntal.jalonel.com/sitemap.xml
+Sitemap: https://venda.jalonel.com/sitemap.xml

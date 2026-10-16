@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  <url><loc>https://jalonel.com/</loc><xhtml:link rel="alternate" hreflang="fr" href="https://jalonel.com/"/><xhtml:link rel="alternate" hreflang="en" href="https://jalonel.com/en/"/></url>
+  <url><loc>https://jalonel.com/en/</loc><xhtml:link rel="alternate" hreflang="fr" href="https://jalonel.com/"/><xhtml:link rel="alternate" hreflang="en" href="https://jalonel.com/en/"/></url>
+  <url><loc>https://jalonel.com/mentions-legales.html</loc><xhtml:link rel="alternate" hreflang="fr" href="https://jalonel.com/mentions-legales.html"/><xhtml:link rel="alternate" hreflang="en" href="https://jalonel.com/en/legal.html"/></url>
+  <url><loc>https://jalonel.com/confidentialite.html</loc><xhtml:link rel="alternate" hreflang="fr" href="https://jalonel.com/confidentialite.html"/><xhtml:link rel="alternate" hreflang="en" href="https://jalonel.com/en/privacy.html"/></url>
+  <url><loc>https://jalonel.com/conditions.html</loc><xhtml:link rel="alternate" hreflang="fr" href="https://jalonel.com/conditions.html"/><xhtml:link rel="alternate" hreflang="en" href="https://jalonel.com/en/terms.html"/></url>
+  <url><loc>https://jalonel.com/en/legal.html</loc><xhtml:link rel="alternate" hreflang="fr" href="https://jalonel.com/mentions-legales.html"/><xhtml:link rel="alternate" hreflang="en" href="https://jalonel.com/en/legal.html"/></url>
+  <url><loc>https://jalonel.com/en/privacy.html</loc><xhtml:link rel="alternate" hreflang="fr" href="https://jalonel.com/confidentialite.html"/><xhtml:link rel="alternate" hreflang="en" href="https://jalonel.com/en/privacy.html"/></url>
+  <url><loc>https://jalonel.com/en/terms.html</loc><xhtml:link rel="alternate" hreflang="fr" href="https://jalonel.com/conditions.html"/><xhtml:link rel="alternate" hreflang="en" href="https://jalonel.com/en/terms.html"/></url>
+</urlset>
