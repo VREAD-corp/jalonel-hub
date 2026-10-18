@@ -3,11 +3,14 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import crypto from 'node:crypto';
 import { ORIGIN, NEEDS, TASKS, SITES, url, LANG_FR, LANG_EN, WHERE_EN } from '../data/offers.mjs';
 
 const root = path.join(path.dirname(fileURLToPath(import.meta.url)), '..');
 export const API = 'https://script.google.com/macros/s/AKfycbzD1IRL8QALluKGZxgGiORFP6-DkC_qFJYR9aOxZiimxa06nbCqpzUI-9iLblp6V2VY/exec';
 export const HOSTS = 'jalonel.com www.jalonel.com';
+// styles.css is cached 10 min by GitHub Pages: the link carries a hash of its content, so a deploy shows the new layout at once.
+const CSS_V = crypto.createHash('sha256').update(fs.readFileSync(path.join(root, 'styles.css'))).digest('hex').slice(0, 10);
 const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 
 const COMPANY = {
@@ -69,7 +72,7 @@ ${alternates(p)}<meta property="og:type" content="website">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="/styles.css">
+<link rel="stylesheet" href="/styles.css?v=${CSS_V}">
 ${noindex ? '<meta name="robots" content="noindex">\n' : ''}${ld ? `<script type="application/ld+json">${JSON.stringify(ld)}</script>\n` : ''}${xp ? `<script>window.OCTAVE_XP=[{id:'jal-titre',variants:['a','b'],mode:'day',tz:'Europe/Paris',pages:'^/(en/)?$',swap:{b:[['#h-titre','text',${JSON.stringify(XP[l].b)}]]}}];</script>\n` : ''}</head>
 <body>
 <a class="skip" href="#contenu">${t.skip}</a>
