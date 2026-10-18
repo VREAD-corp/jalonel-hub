@@ -3,7 +3,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { ORIGIN, GROUPS, SITES, url, LANG_FR, LANG_EN, WHERE_EN } from '../data/offers.mjs';
+import { ORIGIN, NEEDS, TASKS, SITES, url, LANG_FR, LANG_EN, WHERE_EN } from '../data/offers.mjs';
 
 const root = path.join(path.dirname(fileURLToPath(import.meta.url)), '..');
 export const API = 'https://script.google.com/macros/s/AKfycbzD1IRL8QALluKGZxgGiORFP6-DkC_qFJYR9aOxZiimxa06nbCqpzUI-9iLblp6V2VY/exec';
@@ -22,7 +22,8 @@ const ORG = { '@type': 'Organization', '@id': `${ORIGIN}/#org`, name: 'Jalonel',
     address: { '@type': 'PostalAddress', streetAddress: '11 rue Rouvet', postalCode: '75019', addressLocality: 'Paris', addressCountry: 'FR' } } };
 
 // A/B on the home page headline (cro.js, mode day, Europe/Paris): a = by audience, b = by task. Whitelisted in
-// octave-checkout CRO_EXPERIMENTS_ as 'jal-titre'.
+// octave-checkout CRO_EXPERIMENTS_ as 'jal-titre'. Conversion (cro.js data-cta): until 18/10 the hero button, from
+// 19/10 the first click on an offer card (a.go), the hub's real goal (JALONEL-HUB-02).
 const XP = {
   fr: { a: 'Outils gratuits et kits pour les obligations des professionnels, en France et dans 12 autres pays',
         b: 'Préparer un audit Qualiopi, une fiche GPSR, une déclaration d’accessibilité ou une réponse à un appel d’offres' },
@@ -32,11 +33,11 @@ const XP = {
 
 const T = {
   fr: { lang: 'fr', locale: 'fr_FR', home: '/', legal: '/mentions-legales.html', privacy: '/confidentialite.html', terms: '/conditions.html', other: '/en/', otherLabel: 'English', otherLang: 'en',
-    skip: 'Aller au contenu', nav: ['#france', 'France', '#international', 'International'], contact: 'Contact',
+    skip: 'Aller au contenu', nav: ['#besoins', 'Par besoin', '#qui', 'Qui édite Jalonel'], contact: 'Contact',
     footer: 'Jalonel est une marque de READ FRANCE SAS (SIREN 988 741 773), Paris. Mesure d’audience anonyme et agrégée, sans cookie.',
     links: ['Mentions légales', 'Confidentialité', 'Conditions d’utilisation', 'Contact : contact@jalonel.com'] },
   en: { lang: 'en', locale: 'en_GB', home: '/en/', legal: '/en/legal.html', privacy: '/en/privacy.html', terms: '/en/terms.html', other: '/', otherLabel: 'Français', otherLang: 'fr',
-    skip: 'Skip to content', nav: ['#international', 'International', '#france', 'France'], contact: 'Contact',
+    skip: 'Skip to content', nav: ['#besoins', 'By need', '#qui', 'Who runs Jalonel'], contact: 'Contact',
     footer: 'Jalonel is a brand of READ FRANCE SAS (SIREN 988 741 773), Paris. Anonymous, aggregate audience measurement, no cookie.',
     links: ['Legal notice', 'Privacy', 'Terms of use', 'Contact: contact@jalonel.com'] },
 };
@@ -87,57 +88,55 @@ ${body}
   <nav aria-label="${l === 'fr' ? 'Pied de page' : 'Footer'}"><a href="${t.legal}">${t.links[0]}</a><a href="${t.privacy}">${t.links[1]}</a><a href="${t.terms}">${t.links[2]}</a><a href="mailto:contact@jalonel.com">${t.links[3]}</a></nav>
 </div></footer>
 <script src="/mesure.js" defer></script>
-<script src="/cro.js" data-site="jalonel" data-api="${API}" data-hosts="${HOSTS}" data-cta="a.btn:not(.ghost)" defer></script>
+<script src="/cro.js" data-site="jalonel" data-api="${API}" data-hosts="${HOSTS}" data-cta="a.go" defer></script>
 </body>
 </html>
 `;
 }
 
+const bySub = Object.fromEntries(SITES.map((s) => [s.sub, s]));
+const needSites = (n) => n.sites.map((sub) => bySub[sub]);
+
+// One link per card (the task), stretched over the whole card in CSS; mesure.js sends cta_click, cro.js counts the
+// first click as the jal-titre conversion (data-cta="a.go") and the outbound host (out).
 function card(l, s) {
-  const where = s.where ? (l === 'fr' ? s.where : WHERE_EN[s.where]) : '';
-  const meta = [where, l === 'fr' ? `site en ${LANG_FR[s.lang]}` : `site in ${LANG_EN[s.lang]}`].filter(Boolean).join(' · ');
-  return `        <li class="card">
-          <h4><a class="go" href="${url(s)}" hreflang="${s.lang}" data-mesure="cta_click">${esc(s.name)}</a></h4>
-${l === 'fr' && s.group.startsWith('fr-') ? '' : `          <p class="meta">${esc(meta)}</p>\n`}          <p class="desc">${esc(s[l])}</p>
-          <p class="host"><a href="${url(s)}" hreflang="${s.lang}" data-mesure="cta_click">${s.sub}.jalonel.com</a></p>
+  const fr = l === 'fr';
+  const where = s.where ? (fr ? s.where : WHERE_EN[s.where]) : fr ? '' : 'France';
+  const lang = s.lang === l ? '' : fr ? `site en ${LANG_FR[s.lang]}` : `site in ${LANG_EN[s.lang]}`;
+  const meta = [where, lang].filter(Boolean).join(' · ');
+  return `        <li class="card" data-site="${s.sub}">
+          <h3><a class="go" href="${url(s)}" hreflang="${s.lang}" data-mesure="cta_click">${esc(TASKS[s.sub][fr ? 0 : 1])}</a></h3>
+          <p class="brand"><strong>${esc(s.name)}</strong> · <span class="host">${s.sub}.jalonel.com</span></p>
+${meta ? `          <p class="meta">${esc(meta)}</p>\n` : ''}          <p class="desc">${esc(s[l])}</p>
+          <p class="open" aria-hidden="true">${fr ? 'Ouvrir l’outil' : 'Open the tool'} →</p>
         </li>`;
 }
-function groups(l, prefix) {
-  return GROUPS.filter((g) => g.id.startsWith(prefix)).map((g) => `    <div class="group" id="${g.id}" data-section="${g.id}">
-      <div class="group-head"><h3>${esc(g[l][0])}</h3><p>${esc(g[l][1])}</p></div>
-      <ul class="grid">
-${SITES.filter((s) => s.group === g.id).map((s) => card(l, s)).join('\n')}
-      </ul>
-    </div>`).join('\n');
+function needSection(l, n) {
+  const fr = l === 'fr';
+  return `  <section class="need" id="${n.id}" aria-labelledby="h-${n.id}">
+    <h2 id="h-${n.id}" class="sec"><span class="je">${fr ? 'Je dois' : 'I need to'}</span> ${esc(n[l][0])}</h2>
+    <p class="sec-lead">${esc(n[l][1])}</p>
+    <ul class="grid">
+${needSites(n).map((s) => card(l, s)).join('\n')}
+    </ul>
+  </section>`;
 }
 
 function home(l) {
   const fr = l === 'fr';
-  const nFr = SITES.filter((s) => s.group.startsWith('fr-')).length, nInt = SITES.length - nFr;
-  const france = `  <section id="france" aria-labelledby="h-france">
-    <h2 id="h-france" class="sec">${fr ? 'France, par profil' : 'France, by audience (sites in French)'}</h2>
-    <p class="sec-lead">${fr ? `${nFr} sites. Les offres payantes sont vendues aux professionnels, paiement par carte avec Stripe, facture par e-mail.` : `${nFr} sites. Paid offers are sold to businesses, card payment with Stripe, invoice by e-mail.`}</p>
-    <div class="groups">
-${groups(l, 'fr-')}
-    </div>
-  </section>`;
-  const intl = `  <section id="international" aria-labelledby="h-international">
-    <h2 id="h-international" class="sec">${fr ? 'International, par région' : 'International, by region'}</h2>
-    <p class="sec-lead">${fr ? `${nInt} sites conçus pour un pays, dans sa langue, à partir de ses textes officiels.` : `${nInt} sites built for one country, in its language, from its official texts.`}</p>
-    <div class="groups">
-${groups(l, 'int-')}
-    </div>
-  </section>`;
+  const ordered = NEEDS.flatMap(needSites);
   const body = `<main id="contenu"><div class="wrap">
   <section class="hero" id="hero" aria-labelledby="h-titre">
-    <p class="eyebrow">${fr ? 'Jalonel, une marque de READ FRANCE SAS' : 'Jalonel, a brand of READ FRANCE SAS'}</p>
     <h1 id="h-titre">${esc(XP[l].a)}</h1>
     <p class="lead">${fr
-      ? 'Chaque outil a son propre site et cite les textes sur lesquels il s’appuie : décret Qualiopi n° 2026-728, règlement (UE) 2023/988, RGAA, avis BOAMP et TED. La version gratuite fonctionne sans inscription.'
-      : 'Each tool has its own site and cites the texts it relies on: India’s DPDP Act 2023, the Nigeria Tax Act 2025, Chile’s law 21.719, Colombia’s Resolution 0312 of 2019. The free version works without sign-up.'}</p>
-    <div class="cta-row"><a class="btn" href="#${fr ? 'france' : 'international'}">${fr ? 'Voir les outils pour la France' : 'See the international tools'}</a><a class="text-link" href="#${fr ? 'international' : 'france'}">${fr ? 'Outils pour d’autres pays' : 'Tools for France (in French)'}</a></div>
+      ? 'Un site par tâche, une version gratuite sans inscription, les textes officiels cités.'
+      : 'One site per task, a free version without sign-up, the official texts cited.'}</p>
+    <nav class="needs" id="besoins" aria-label="${fr ? 'Choisir selon votre besoin' : 'Choose by need'}">
+      <p class="needs-label">${fr ? 'Je dois…' : 'I need to…'}</p>
+      <ul>${NEEDS.map((n) => `<li><a class="need" href="#${n.id}">${esc(n.short[fr ? 0 : 1])}</a></li>`).join('')}</ul>
+    </nav>
   </section>
-${fr ? france + '\n' + intl : intl + '\n' + france}
+${NEEDS.map((n) => needSection(l, n)).join('\n')}
   <section class="about" id="qui" aria-labelledby="h-qui">
     <h2 id="h-qui">${fr ? 'Qui édite Jalonel' : 'Who runs Jalonel'}</h2>
     <p>${fr
@@ -152,10 +151,10 @@ ${fr ? france + '\n' + intl : intl + '\n' + france}
 </div></main>`;
   const ld = { '@context': 'https://schema.org', '@graph': [ORG,
     { '@type': 'WebSite', '@id': `${ORIGIN}/#website`, url: `${ORIGIN}/`, name: 'Jalonel', inLanguage: l, publisher: { '@id': `${ORIGIN}/#org` } },
-    { '@type': 'ItemList', name: fr ? 'Sites Jalonel' : 'Jalonel sites', itemListElement: SITES.map((s, i) => ({ '@type': 'ListItem', position: i + 1, name: s.name, url: url(s) })) }] };
+    { '@type': 'ItemList', name: fr ? 'Sites Jalonel' : 'Jalonel sites', itemListElement: ordered.map((s, i) => ({ '@type': 'ListItem', position: i + 1, name: s.name, url: url(s) })) }] };
   return page(l, { p: T[l].home, title: fr ? 'Jalonel, outils et kits pour les obligations des professionnels' : 'Jalonel, tools and kits for professional obligations',
-    desc: fr ? 'Kit Qualiopi V10, fiche GPSR, déclaration d’accessibilité, appels d’offres, charte IA, et des outils pour le Maroc, le Nigeria, l’Inde, les Philippines, le Chili, la Colombie et le Brésil.'
-      : 'Tools for India (DPDP), Nigeria (tax), the Philippines (CSE), Chile (law 21.719), Colombia (SG-SST), Brazil (marketplace pricing), Morocco and France.',
+    desc: fr ? 'Appels d’offres publics, kit Qualiopi V10, fiche GPSR, déclaration d’accessibilité, charte IA, calculateurs et outils pour le Maroc, le Nigeria, l’Inde, le Chili, la Colombie et le Brésil.'
+      : 'Public tenders, the Qualiopi V10 kit, GPSR sheets, calculators and tools for India (DPDP), Nigeria (tax), the Philippines (CSE), Chile (law 21.719), Colombia (SG-SST), Brazil and Morocco.',
     body, ld, xp: true });
 }
 

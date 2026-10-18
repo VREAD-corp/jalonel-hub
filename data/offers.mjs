@@ -1,17 +1,63 @@
 // Single list of the Jalonel sites (one subdomain each). tools/build.mjs builds the hub pages, sitemap.xml and
 // robots.txt from it; tests/hub.check.mjs checks the committed files against it.
-// group: France by audience (fr-*), international by region (int-*). lang: language of the site itself.
+// group: France by audience (fr-*), international by region (int-*), kept for the record; the home page uses NEEDS.
+// lang: language of the site itself.
 export const ORIGIN = 'https://jalonel.com';
 
-export const GROUPS = [
-  { id: 'fr-of', fr: ['Organismes de formation', 'Certification Qualiopi et marchés publics de formation'], en: ['Training providers (France)', 'Qualiopi certification and public training tenders'] },
-  { id: 'fr-vendeurs', fr: ['Vendeurs en ligne et éditeurs d’applications', 'Sécurité des produits, budget publicitaire'], en: ['Online sellers and app publishers (France)', 'Product safety, ad budget'] },
-  { id: 'fr-pme', fr: ['Entreprises et PME', 'Accessibilité, IA, marques, appels d’offres, rédaction'], en: ['Companies and SMEs (France)', 'Accessibility, AI, trademarks, tenders, writing'] },
-  { id: 'fr-particuliers', fr: ['Particuliers', 'Courriers administratifs, TCF Canada'], en: ['Individuals (France)', 'Official letters, TCF Canada'] },
-  { id: 'int-afrique', fr: ['Afrique', 'Maroc, Maghreb, Afrique de l’Ouest et centrale, Nigeria'], en: ['Africa', 'Morocco, Maghreb, West and Central Africa, Nigeria'] },
-  { id: 'int-asie', fr: ['Asie', 'Inde, Philippines'], en: ['Asia', 'India, the Philippines'] },
-  { id: 'int-amlat', fr: ['Amérique latine', 'Chili, Colombie, Brésil'], en: ['Latin America', 'Chile, Colombia, Brazil'] },
+// Home page: navigation by need (« Je dois… », JALONEL-HUB-02, 2026-10-19). Needs and the sites inside each need are in
+// descending order of reliable views (Stats, 11–18/10/2026, octave-asset-ventures cro/FUNNEL-2026-10-18.md) given in
+// `views`; two needs within 10 % of each other are ordered by cro/PORTFOLIO-FOCUS.md (France compliance before
+// calculators). short: label in the hero index (« Je dois… »); task: what the visitor wants to get done, used as the card title (link text).
+export const NEEDS = [
+  { id: 'ao', short: ['trouver un appel d’offres', 'find a tender'], fr: ['trouver un appel d’offres public', 'Avis du BOAMP, de TED et des marchés publics marocains, mis à jour deux fois par jour.'],
+    en: ['find a public tender', 'Notices from BOAMP, TED and Moroccan public procurement, refreshed twice a day.'],
+    sites: ['ao-afrique', 'lot-repere', 'ao-formation'] },
+  { id: 'conformite', short: ['me mettre en conformité', 'comply with a French rule'], fr: ['me mettre en conformité en France', 'Qualiopi, sécurité des produits, accessibilité numérique, usage de l’IA au travail.'],
+    en: ['comply with a French rule', 'Qualiopi, product safety, digital accessibility, AI at work. Sites in French.'],
+    sites: ['charte-ia', 'gpsr', 'qualiopi', 'accessibilite'] },
+  { id: 'calcul', short: ['calculer un prix ou un impôt', 'work out a price or a tax'], fr: ['calculer un prix, un budget ou un impôt', 'Impôt au Nigeria, prix de vente au Brésil, budget publicitaire d’une app.'],
+    en: ['work out a price, a budget or a tax', 'Income tax in Nigeria, selling prices in Brazil, an app’s ad budget.'],
+    sites: ['dollar-filer', 'appseuil', 'venda'] },
+  { id: 'texte', short: ['relire un texte, protéger ma marque', 'check a text or my brand'], fr: ['relire un texte ou surveiller ma marque', 'Tics d’écriture, délais d’opposition, réponses des assistants IA sur votre entreprise.'],
+    en: ['check a text or watch my brand', 'Writing tics, trademark opposition deadlines, what AI assistants say about your company.'],
+    sites: ['sans-tic', 'marques', 'visibilite-ia'] },
+  { id: 'examen', short: ['préparer un examen', 'prepare for an exam'], fr: ['préparer un examen', 'TCF Canada, allemand (Goethe, telc), fonction publique philippine.'],
+    en: ['prepare for an exam', 'TCF Canada, German (Goethe, telc), the Philippine civil service.'],
+    sites: ['handa', 'tcf-canada', 'deutschdrill'] },
+  { id: 'etranger', short: ['respecter une loi à l’étranger', 'comply with a law abroad'], fr: ['respecter une loi hors de France', 'Données personnelles au Chili et en Inde, sécurité au travail en Colombie.'],
+    en: ['comply with a law outside France', 'Personal data in Chile and India, workplace safety in Colombia.'],
+    sites: ['candado', 'puntal', 'dpdp'] },
+  { id: 'demarches', short: ['comprendre un courrier, un visa', 'read a letter, file a visa'], fr: ['comprendre un courrier ou monter un dossier de visa', 'Délais, pièces à fournir et liens vers les sites officiels.'],
+    en: ['understand a letter or prepare a visa file', 'Deadlines, documents to provide and links to the official sites. In French.'],
+    sites: ['pieces-en-ordre', 'courrier'] },
 ];
+// Reliable views 11–18/10/2026 (Stats), the sort key of NEEDS.
+export const VIEWS = { 'ao-afrique': 75, 'sans-tic': 30, 'dollar-filer': 28, appseuil: 24, 'charte-ia': 23, 'lot-repere': 22, gpsr: 17, qualiopi: 15,
+  venda: 13, handa: 13, 'ao-formation': 12, 'pieces-en-ordre': 12, candado: 12, puntal: 10, courrier: 10, marques: 9, accessibilite: 9, 'tcf-canada': 9,
+  'visibilite-ia': 7, deutschdrill: 7, dpdp: 6 };
+export const TASKS = {
+  'ao-afrique': ['Trouver un appel d’offres public au Maroc', 'Find an open public tender in Morocco'],
+  'lot-repere': ['Trouver un marché de nettoyage, d’espaces verts ou de sécurité', 'Find French cleaning, landscaping or security tenders'],
+  'ao-formation': ['Trouver un marché public de formation', 'Find French public training tenders'],
+  'charte-ia': ['Rédiger la charte IA de votre entreprise', 'Write your company’s AI use policy'],
+  gpsr: ['Rédiger la fiche de sécurité d’un produit (GPSR)', 'Write a GPSR product safety sheet'],
+  qualiopi: ['Préparer l’audit Qualiopi V10', 'Prepare the Qualiopi V10 audit'],
+  accessibilite: ['Publier votre déclaration d’accessibilité', 'Publish your accessibility statement'],
+  'dollar-filer': ['Estimer votre impôt 2026 au Nigeria', 'Estimate your 2026 income tax in Nigeria'],
+  appseuil: ['Fixer le coût par installation maximal d’une app', 'Set the maximum cost per install of an app'],
+  venda: ['Fixer un prix de vente sur Mercado Livre ou Shopee', 'Price a product on Mercado Livre or Shopee'],
+  'sans-tic': ['Repérer les tics d’IA dans un texte en français', 'Spot AI writing tics in a French text'],
+  marques: ['Surveiller votre marque à l’INPI et à l’EUIPO', 'Watch your trademark at INPI and EUIPO'],
+  'visibilite-ia': ['Voir ce que ChatGPT dit de votre entreprise', 'See what ChatGPT says about your company'],
+  handa: ['Réviser l’examen de la fonction publique philippine', 'Review for the Philippine Civil Service Exam'],
+  'tcf-canada': ['Préparer l’oral et l’écrit du TCF Canada', 'Prepare the TCF Canada speaking and writing tasks'],
+  deutschdrill: ['S’entraîner à l’examen d’allemand, niveaux A1 à B1', 'Practise for a German exam, levels A1 to B1'],
+  candado: ['Appliquer la loi chilienne 21.719 sur les données', 'Comply with Chile’s data protection law 21.719'],
+  puntal: ['Évaluer les standards SG-SST d’une entreprise colombienne', 'Assess the SG-SST standards of a Colombian company'],
+  dpdp: ['Appliquer la loi indienne DPDP dans une PME', 'Comply with India’s DPDP Act in a small business'],
+  'pieces-en-ordre': ['Vérifier un dossier de visa court séjour pour la France', 'Check a short-stay visa file for France'],
+  courrier: ['Comprendre un courrier de la CAF, des impôts ou de la préfecture', 'Understand a letter from the CAF, the tax office or the préfecture'],
+};
 
 export const SITES = [
   { repo: 'kit-qualiopi-v10', sub: 'qualiopi', group: 'fr-of', lang: 'fr', name: 'Kit Qualiopi V10',

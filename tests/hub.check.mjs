@@ -9,7 +9,7 @@ import path from 'node:path';
 import assert from 'node:assert/strict';
 import { fileURLToPath } from 'node:url';
 import { build, API, HOSTS } from '../tools/build.mjs';
-import { SITES } from '../data/offers.mjs';
+import { SITES, NEEDS, VIEWS, TASKS } from '../data/offers.mjs';
 
 const root = path.join(path.dirname(fileURLToPath(import.meta.url)), '..');
 const read = (f) => fs.readFileSync(path.join(root, f), 'utf8');
@@ -41,5 +41,27 @@ for (const f of ['index.html', 'en/index.html']) {
   const org = lds.flatMap((x) => x['@graph'] || [x]).find((x) => x['@type'] === 'Organization');
   assert.ok(org && org['@id'] === 'https://jalonel.com/#org' && org.logo && org.parentOrganization.name === 'READ FRANCE SAS', f + ': Organization');
   for (const u of org.sameAs || []) assert.doesNotMatch(u, /vread|github\.com\/VREAD/i, f + ': sameAs only to Jalonel assets');
+}
+// Home by need (JALONEL-HUB-02): every site in exactly one need, with a task title and its baseline views; sites inside a
+// need by descending views; needs by descending total views, except two needs within 10 % of each other (portfolio order).
+const placed = NEEDS.flatMap((n) => n.sites);
+assert.deepEqual([...placed].sort(), SITES.map((s) => s.sub).sort(), 'each site in exactly one need');
+for (const s of SITES) { assert.ok(TASKS[s.sub]?.[0] && TASKS[s.sub]?.[1], s.sub + ': task fr/en'); assert.ok(Number.isFinite(VIEWS[s.sub]), s.sub + ': baseline views'); }
+const tot = (n) => n.sites.reduce((t, x) => t + VIEWS[x], 0);
+NEEDS.forEach((n, i) => {
+  for (let j = 1; j < n.sites.length; j++) assert.ok(VIEWS[n.sites[j - 1]] >= VIEWS[n.sites[j]], n.id + ': sites by views');
+  if (i) assert.ok(tot(NEEDS[i - 1]) >= tot(n) * 0.9, n.id + ': needs by views');
+});
+for (const f of ['index.html', 'en/index.html']) {
+  const h = read(f);
+  const cards = [...h.matchAll(/<li class="card"[^>]*>([\s\S]*?)<\/li>/g)].map((m) => m[1]);
+  assert.equal(cards.length, SITES.length, f + ': one card per site');
+  for (const c of cards) {
+    const links = c.match(/<a [^>]*>/g) || [];
+    assert.equal(links.length, 1, f + ': one link per card (whole card clickable)');
+    assert.match(links[0], /class="go"[^>]*data-mesure="cta_click"/, f + ': card link sends cta_click');
+  }
+  assert.match(h, /src="\/cro\.js"[^>]*data-cta="a\.go"/, f + ': jal-titre conversion = offer card click');
+  assert.match(h, /id="h-titre"/, f + ': jal-titre target');
 }
 console.log(`hub: ok (${Object.keys(out).length} generated files, ${SITES.length} sites)`);
