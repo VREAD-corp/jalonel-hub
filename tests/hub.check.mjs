@@ -15,8 +15,9 @@ const root = path.join(path.dirname(fileURLToPath(import.meta.url)), '..');
 const read = (f) => fs.readFileSync(path.join(root, f), 'utf8');
 const out = build();
 for (const [f, c] of Object.entries(out)) assert.equal(read(f), c, f + ' is out of date: run node tools/build.mjs');
-const master = path.join(root, '..', 'octave-checkout', 'gas', 'web');
-if (fs.existsSync(master)) for (const f of ['mesure.js', 'cro.js']) assert.equal(read(f), fs.readFileSync(path.join(master, f), 'utf8'), f + ' differs from octave-checkout');
+const master = path.join(root, '..', 'octave-checkout', 'gas', 'web', 'jalonel');
+if (fs.existsSync(master)) for (const f of ['mesure.js', 'cro.js']) assert.equal(read(f), fs.readFileSync(path.join(master, f), 'utf8'), f + ' differs from octave-checkout gas/web/jalonel/');
+for (const f of ['mesure.js', 'cro.js']) assert.doesNotMatch(read(f), /vread/i, f + ': the Jalonel tracking copy has no reading-site host');
 for (const f of Object.keys(out).filter((f) => f.endsWith('.html'))) {
   const h = read(f);
   const cro = h.match(/<script[^>]*src="\/cro\.js"[^>]*>/g) || [];
@@ -26,8 +27,10 @@ for (const f of Object.keys(out).filter((f) => f.endsWith('.html'))) {
   assert.equal((h.match(/rel="canonical" href="https:\/\/jalonel\.com\//g) || []).length, 1, f + ': canonical');
   assert.match(h, /(Jalonel est une marque de READ FRANCE SAS|Jalonel is a brand of READ FRANCE SAS)/, f + ': brand mention');
   assert.doesNotMatch(h, /outils\.vread\.fr\/(?!")/, f + ': no link to a moved outils.vread.fr page');
-  // Jalonel is unrelated to Vread: no link to outils.vread.fr and no « Vread » in the page (the contact address excepted).
-  assert.doesNotMatch(h.replace(/octave@vread\.fr/g, '').replace(/data-hosts="[^"]*"/g, ''), /vread/i, f + ': no Vread mention');
+  // Jalonel is unrelated to Vread: no « vread » anywhere in the page, contact contact@jalonel.com, no GitHub repository link.
+  assert.doesNotMatch(h, /vread/i, f + ': no Vread mention');
+  assert.doesNotMatch(h, /github\.com\/VREAD|code source|source code/i, f + ': no GitHub repository link');
+  assert.match(h, /mailto:contact@jalonel\.com/, f + ': contact@jalonel.com');
 }
 for (const f of ['mentions-legales.html', 'en/legal.html']) assert.match(read(f), /988 741 773/, f + ': SIREN');
 for (const s of SITES) { assert.ok(read('index.html').includes(`https://${s.sub}.jalonel.com/`), 'fr home lists ' + s.repo); assert.ok(read('en/index.html').includes(`https://${s.sub}.jalonel.com/`), 'en home lists ' + s.repo); }
