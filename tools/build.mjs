@@ -15,6 +15,9 @@ const COMPANY = {
   en: ['READ FRANCE SAS, French simplified joint-stock company with a share capital of €1,000', 'Registered office: 11 rue Rouvet, 75019 Paris, France', 'SIREN 988 741 773, Paris Trade and Companies Register (RCS Paris 988 741 773)'],
 };
 const ORG = { '@type': 'Organization', '@id': `${ORIGIN}/#org`, name: 'Jalonel', url: `${ORIGIN}/`, logo: `${ORIGIN}/logo-512.png`, email: 'octave@vread.fr',
+  // No sameAs: no Jalonel profile exists outside jalonel.com (checked 2026-10-18: github.com/Jalonel and facebook.com/jalonel are
+  // not ours, linkedin.com/company/jalonel and x.com/jalonel do not exist). Add one only for an account READ FRANCE opens.
+  contactPoint: { '@type': 'ContactPoint', contactType: 'customer support', email: 'octave@vread.fr', availableLanguage: ['fr', 'en'] },
   parentOrganization: { '@type': 'Organization', name: 'READ FRANCE SAS', legalName: 'READ FRANCE', identifier: { '@type': 'PropertyValue', propertyID: 'SIREN', value: '988741773' },
     address: { '@type': 'PostalAddress', streetAddress: '11 rue Rouvet', postalCode: '75019', addressLocality: 'Paris', addressCountry: 'FR' } } };
 
@@ -138,8 +141,8 @@ ${fr ? france + '\n' + intl : intl + '\n' + france}
   <section class="about" id="qui" aria-labelledby="h-qui">
     <h2 id="h-qui">${fr ? 'Qui édite Jalonel' : 'Who runs Jalonel'}</h2>
     <p>${fr
-      ? 'Jalonel est une marque de READ FRANCE SAS, société installée dans le 19e arrondissement de Paris. READ FRANCE SAS vend les kits et services de ces sites et en publie les outils gratuits ; ses offres de lecture et de compréhension restent sur <a href="https://outils.vread.fr/">outils.vread.fr</a>.'
-      : 'Jalonel is a brand of READ FRANCE SAS, a company based in Paris (19th arrondissement). READ FRANCE SAS sells the kits and services of these sites and publishes their free tools; its reading and comprehension offers stay on <a href="https://outils.vread.fr/">outils.vread.fr</a>.'}</p>
+      ? 'Jalonel est une marque de READ FRANCE SAS, société installée dans le 19e arrondissement de Paris. READ FRANCE SAS vend les kits et services de ces sites et en publie les outils gratuits.'
+      : 'Jalonel is a brand of READ FRANCE SAS, a company based in Paris (19th arrondissement). READ FRANCE SAS sells the kits and services of these sites and publishes their free tools.'}</p>
     <ul class="facts">${COMPANY[l].map((x) => `<li>${esc(x)}</li>`).join('')}<li><a href="${T[l].legal}">${T[l].links[0]}</a></li></ul>
     <p class="about-contact">${fr ? 'Une question sur un outil, une commande ou une facture ?' : 'A question about a tool, an order or an invoice?'} <a class="btn ghost" href="mailto:octave@vread.fr">octave@vread.fr</a></p>
   </section>

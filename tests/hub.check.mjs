@@ -26,9 +26,17 @@ for (const f of Object.keys(out).filter((f) => f.endsWith('.html'))) {
   assert.equal((h.match(/rel="canonical" href="https:\/\/jalonel\.com\//g) || []).length, 1, f + ': canonical');
   assert.match(h, /(Jalonel est une marque de READ FRANCE SAS|Jalonel is a brand of READ FRANCE SAS)/, f + ': brand mention');
   assert.doesNotMatch(h, /outils\.vread\.fr\/(?!")/, f + ': no link to a moved outils.vread.fr page');
+  // Jalonel is unrelated to Vread: no link to outils.vread.fr and no « Vread » in the page (the contact address excepted).
+  assert.doesNotMatch(h.replace(/octave@vread\.fr/g, '').replace(/data-hosts="[^"]*"/g, ''), /vread/i, f + ': no Vread mention');
 }
 for (const f of ['mentions-legales.html', 'en/legal.html']) assert.match(read(f), /988 741 773/, f + ': SIREN');
 for (const s of SITES) { assert.ok(read('index.html').includes(`https://${s.sub}.jalonel.com/`), 'fr home lists ' + s.repo); assert.ok(read('en/index.html').includes(`https://${s.sub}.jalonel.com/`), 'en home lists ' + s.repo); }
 assert.equal(read('5be19f56d46ca3d2553bee28ebfa8edd.txt').trim(), '5be19f56d46ca3d2553bee28ebfa8edd');
 assert.equal(read('CNAME').trim(), 'jalonel.com');
+for (const f of ['index.html', 'en/index.html']) {
+  const lds = [...read(f).matchAll(/<script type="application\/ld\+json">(.*?)<\/script>/gs)].map((m) => JSON.parse(m[1]));
+  const org = lds.flatMap((x) => x['@graph'] || [x]).find((x) => x['@type'] === 'Organization');
+  assert.ok(org && org['@id'] === 'https://jalonel.com/#org' && org.logo && org.parentOrganization.name === 'READ FRANCE SAS', f + ': Organization');
+  for (const u of org.sameAs || []) assert.doesNotMatch(u, /vread|github\.com\/VREAD/i, f + ': sameAs only to Jalonel assets');
+}
 console.log(`hub: ok (${Object.keys(out).length} generated files, ${SITES.length} sites)`);
