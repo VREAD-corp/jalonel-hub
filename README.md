@@ -16,3 +16,7 @@ subdomain (custom domain on GitHub Pages, DNS CNAME to `vread-corp.github.io` in
 - Search Console: domain property `sc-domain:jalonel.com` (DNS TXT verification in the OVH zone).
 - Images: `PLAYWRIGHT=<playwright module> node tools/render-images.mjs` renders `og.png` and `logo-512.png`.
 - Contact: contact@jalonel.com (OVH e-mail redirection, since 2026-10-18), on every page, legal page and JSON-LD contactPoint.
+
+## Monitoring
+
+`.github/workflows/monitor.yml` (daily, 08:53 UTC) runs `.github/monitor/monitor.mjs` with `.github/monitor/monitor-watch.json`: HTTP status of the sites listed there and the last runs of the public workflows that build them. On any failure the job fails and GitHub e-mails the maintainer who last changed the schedule (no issue, the repository is public). Read-only, `GITHUB_TOKEN` only.

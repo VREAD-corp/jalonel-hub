@@ -1,0 +1,234 @@
+{
+ "_doc": "tools/monitor.mjs config: Jalonel sites and their public workflows; mode fail (a failed run e-mails the maintainer).",
+ "mode": "fail",
+ "userAgent": "JalonelMonitor/1.0 (+https://jalonel.com/)",
+ "workflows": [
+  {
+   "repo": "veille-ao-afrique",
+   "workflow": "update.yml",
+   "maxAgeHours": 30,
+   "events": [
+    "schedule",
+    "workflow_dispatch"
+   ]
+  },
+  {
+   "repo": "veille-ao-formation",
+   "workflow": "update.yml",
+   "maxAgeHours": 30,
+   "events": [
+    "schedule",
+    "workflow_dispatch"
+   ]
+  },
+  {
+   "repo": "veille-ao-formation",
+   "workflow": "weekly-release.yml",
+   "maxAgeHours": 200,
+   "events": [
+    "schedule",
+    "workflow_dispatch"
+   ]
+  },
+  {
+   "repo": "veille-ao-formation",
+   "workflow": "tests.yml"
+  },
+  {
+   "repo": "lot-repere",
+   "workflow": "update.yml",
+   "maxAgeHours": 30,
+   "events": [
+    "schedule",
+    "workflow_dispatch"
+   ]
+  },
+  {
+   "repo": "lot-repere",
+   "workflow": "weekly-release.yml",
+   "maxAgeHours": 200,
+   "events": [
+    "schedule",
+    "workflow_dispatch"
+   ]
+  },
+  {
+   "repo": "dollar-filer",
+   "workflow": "rates.yml",
+   "maxAgeHours": 80,
+   "events": [
+    "schedule",
+    "workflow_dispatch"
+   ]
+  },
+  {
+   "repo": "comprendre-mon-courrier",
+   "workflow": "pages.yml"
+  },
+  {
+   "repo": "declaration-accessibilite",
+   "workflow": "pages.yml"
+  },
+  {
+   "repo": "deutschdrill",
+   "workflow": "pages.yml"
+  },
+  {
+   "repo": "kit-gpsr-vendeurs",
+   "workflow": "pages.yml"
+  },
+  {
+   "repo": "plaindpdp",
+   "workflow": "pages.yml"
+  },
+  {
+   "repo": "tcf-canada-entrainement",
+   "workflow": "pages.yml"
+  },
+  {
+   "repo": "veille-marques",
+   "workflow": "pages.yml"
+  },
+  {
+   "repo": "visibilite-ia",
+   "workflow": "pages.yml"
+  },
+  {
+   "repo": "charte-ia",
+   "workflow": "test.yml"
+  },
+  {
+   "repo": "sans-tic",
+   "workflow": "test.yml"
+  },
+  {
+   "repo": "test-pub-app",
+   "workflow": "test.yml"
+  },
+  {
+   "repo": "jalonel-hub",
+   "workflow": "pages-build-deployment"
+  },
+  {
+   "repo": "candadopyme",
+   "workflow": "pages-build-deployment"
+  },
+  {
+   "repo": "charte-ia",
+   "workflow": "pages-build-deployment"
+  },
+  {
+   "repo": "dollar-filer",
+   "workflow": "pages-build-deployment"
+  },
+  {
+   "repo": "handa-cse",
+   "workflow": "pages-build-deployment"
+  },
+  {
+   "repo": "kit-qualiopi-v10",
+   "workflow": "pages-build-deployment"
+  },
+  {
+   "repo": "pieces-en-ordre",
+   "workflow": "pages-build-deployment"
+  },
+  {
+   "repo": "puntal-sst",
+   "workflow": "pages-build-deployment"
+  },
+  {
+   "repo": "sans-tic",
+   "workflow": "pages-build-deployment"
+  },
+  {
+   "repo": "test-pub-app",
+   "workflow": "pages-build-deployment"
+  },
+  {
+   "repo": "venda-no-azul",
+   "workflow": "pages-build-deployment"
+  }
+ ],
+ "sites": [
+  {
+   "url": "https://jalonel.com/"
+  },
+  {
+   "url": "https://ao-afrique.jalonel.com/"
+  },
+  {
+   "url": "https://ao-formation.jalonel.com/"
+  },
+  {
+   "url": "https://lot-repere.jalonel.com/"
+  },
+  {
+   "url": "https://dollar-filer.jalonel.com/"
+  },
+  {
+   "url": "https://accessibilite.jalonel.com/"
+  },
+  {
+   "url": "https://dpdp.jalonel.com/"
+  },
+  {
+   "url": "https://puntal.jalonel.com/"
+  },
+  {
+   "url": "https://gpsr.jalonel.com/"
+  },
+  {
+   "url": "https://appseuil.jalonel.com/"
+  },
+  {
+   "url": "https://sans-tic.jalonel.com/"
+  },
+  {
+   "url": "https://candado.jalonel.com/"
+  },
+  {
+   "url": "https://charte-ia.jalonel.com/"
+  },
+  {
+   "url": "https://venda.jalonel.com/"
+  },
+  {
+   "url": "https://visibilite-ia.jalonel.com/"
+  },
+  {
+   "url": "https://handa.jalonel.com/"
+  },
+  {
+   "url": "https://deutschdrill.jalonel.com/"
+  },
+  {
+   "url": "https://qualiopi.jalonel.com/"
+  },
+  {
+   "url": "https://pieces-en-ordre.jalonel.com/"
+  },
+  {
+   "url": "https://tcf-canada.jalonel.com/"
+  },
+  {
+   "url": "https://courrier.jalonel.com/"
+  },
+  {
+   "url": "https://marques.jalonel.com/"
+  }
+ ],
+ "statusFiles": [
+  {
+   "url": "https://ao-afrique.jalonel.com/statut.json",
+   "maxAgeHours": 48
+  }
+ ],
+ "alerts": [
+  {
+   "name": "Veille AO Afrique (alertes e-mail)",
+   "url": "https://script.google.com/macros/s/AKfycbyUsVoWWzL7xA18-O-GkEto4ivugNO-8v4W0l1pugf1HmLHUSKG7uOhEcx3FT2RgfKpWA/exec?action=alerts_status",
+   "maxAgeHours": 30
+  }
+ ]
+}
