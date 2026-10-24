@@ -4,7 +4,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import crypto from 'node:crypto';
-import { ORIGIN, NEEDS, TASKS, SITES, url, LANG_FR, LANG_EN, WHERE_EN } from '../data/offers.mjs';
+import { ORIGIN, NEEDS, PAUSED, TASKS, SITES, url, LANG_FR, LANG_EN, WHERE_EN } from '../data/offers.mjs';
 
 const root = path.join(path.dirname(fileURLToPath(import.meta.url)), '..');
 export const API = 'https://script.google.com/macros/s/AKfycbzD1IRL8QALluKGZxgGiORFP6-DkC_qFJYR9aOxZiimxa06nbCqpzUI-9iLblp6V2VY/exec';
@@ -125,6 +125,19 @@ ${needSites(n).map((s) => card(l, s)).join('\n')}
   </section>`;
 }
 
+// Paused sites (2026-10-24): one plain line each, after the needs; no card, no cta_click, so they stay out of the hub's
+// conversion counters. The pages stay online with noindex and a « paused » banner.
+function pausedSection(l) {
+  const fr = l === 'fr';
+  return `  <section class="paused" id="en-pause" aria-labelledby="h-pause">
+    <h2 id="h-pause">${fr ? 'En pause' : 'Paused'}</h2>
+    <p>${fr
+      ? 'Ces outils restent en ligne mais ne reçoivent plus de mises à jour ni de nouvelles demandes.'
+      : 'These tools stay online but no longer get updates or take new requests.'}</p>
+    <ul>${PAUSED.map((sub) => bySub[sub]).map((s) => `<li><a href="${url(s)}" hreflang="${s.lang}">${esc(s.name)}</a> · ${esc(TASKS[s.sub][fr ? 0 : 1])}</li>`).join('')}</ul>
+  </section>`;
+}
+
 function home(l) {
   const fr = l === 'fr';
   const ordered = NEEDS.flatMap(needSites);
@@ -140,6 +153,7 @@ function home(l) {
     </nav>
   </section>
 ${NEEDS.map((n) => needSection(l, n)).join('\n')}
+${pausedSection(l)}
   <section class="about" id="qui" aria-labelledby="h-qui">
     <h2 id="h-qui">${fr ? 'Qui édite Jalonel' : 'Who runs Jalonel'}</h2>
     <p>${fr
@@ -156,8 +170,8 @@ ${NEEDS.map((n) => needSection(l, n)).join('\n')}
     { '@type': 'WebSite', '@id': `${ORIGIN}/#website`, url: `${ORIGIN}/`, name: 'Jalonel', inLanguage: l, publisher: { '@id': `${ORIGIN}/#org` } },
     { '@type': 'ItemList', name: fr ? 'Sites Jalonel' : 'Jalonel sites', itemListElement: ordered.map((s, i) => ({ '@type': 'ListItem', position: i + 1, name: s.name, url: url(s) })) }] };
   return page(l, { p: T[l].home, title: fr ? 'Jalonel, outils et kits pour les obligations des professionnels' : 'Jalonel, tools and kits for professional obligations',
-    desc: fr ? 'Appels d’offres publics, kit Qualiopi V10, fiche GPSR, déclaration d’accessibilité, charte IA, calculateurs et outils pour le Maroc, le Nigeria, l’Inde, le Chili, la Colombie et le Brésil.'
-      : 'Public tenders, the Qualiopi V10 kit, GPSR sheets, calculators and tools for India (DPDP), Nigeria (tax), the Philippines (CSE), Chile (law 21.719), Colombia (SG-SST), Brazil and Morocco.',
+    desc: fr ? 'Appels d’offres publics en Afrique et en France, kit Qualiopi V10, déclaration d’accessibilité, fiche GPSR, et des guides gratuits : marques, IA, courriers, examens.'
+      : 'Public tenders in Africa and France, the Qualiopi V10 kit, accessibility statements, GPSR sheets, and free guides: trademarks, AI, official letters, exams.',
     body, ld, xp: true });
 }
 

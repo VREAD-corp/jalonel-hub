@@ -10,7 +10,6 @@ Sitemap: https://accessibilite.jalonel.com/sitemap.xml
 Sitemap: https://charte-ia.jalonel.com/sitemap.xml
 Sitemap: https://visibilite-ia.jalonel.com/sitemap.xml
 Sitemap: https://marques.jalonel.com/sitemap.xml
-Sitemap: https://lot-repere.jalonel.com/sitemap.xml
 Sitemap: https://sans-tic.jalonel.com/sitemap.xml
 Sitemap: https://courrier.jalonel.com/sitemap.xml
 Sitemap: https://tcf-canada.jalonel.com/sitemap.xml

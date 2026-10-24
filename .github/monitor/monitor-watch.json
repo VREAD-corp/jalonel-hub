@@ -35,33 +35,6 @@
    "workflow": "tests.yml"
   },
   {
-   "repo": "lot-repere",
-   "workflow": "update.yml",
-   "maxAgeHours": 30,
-   "events": [
-    "schedule",
-    "workflow_dispatch"
-   ]
-  },
-  {
-   "repo": "lot-repere",
-   "workflow": "weekly-release.yml",
-   "maxAgeHours": 200,
-   "events": [
-    "schedule",
-    "workflow_dispatch"
-   ]
-  },
-  {
-   "repo": "dollar-filer",
-   "workflow": "rates.yml",
-   "maxAgeHours": 80,
-   "events": [
-    "schedule",
-    "workflow_dispatch"
-   ]
-  },
-  {
    "repo": "comprendre-mon-courrier",
    "workflow": "pages.yml"
   },
@@ -70,15 +43,7 @@
    "workflow": "pages.yml"
   },
   {
-   "repo": "deutschdrill",
-   "workflow": "pages.yml"
-  },
-  {
    "repo": "kit-gpsr-vendeurs",
-   "workflow": "pages.yml"
-  },
-  {
-   "repo": "plaindpdp",
    "workflow": "pages.yml"
   },
   {
@@ -94,31 +59,7 @@
    "workflow": "pages.yml"
   },
   {
-   "repo": "charte-ia",
-   "workflow": "test.yml"
-  },
-  {
-   "repo": "sans-tic",
-   "workflow": "test.yml"
-  },
-  {
-   "repo": "test-pub-app",
-   "workflow": "test.yml"
-  },
-  {
    "repo": "jalonel-hub",
-   "workflow": "pages-build-deployment"
-  },
-  {
-   "repo": "candadopyme",
-   "workflow": "pages-build-deployment"
-  },
-  {
-   "repo": "charte-ia",
-   "workflow": "pages-build-deployment"
-  },
-  {
-   "repo": "dollar-filer",
    "workflow": "pages-build-deployment"
   },
   {
@@ -127,26 +68,6 @@
   },
   {
    "repo": "kit-qualiopi-v10",
-   "workflow": "pages-build-deployment"
-  },
-  {
-   "repo": "pieces-en-ordre",
-   "workflow": "pages-build-deployment"
-  },
-  {
-   "repo": "puntal-sst",
-   "workflow": "pages-build-deployment"
-  },
-  {
-   "repo": "sans-tic",
-   "workflow": "pages-build-deployment"
-  },
-  {
-   "repo": "test-pub-app",
-   "workflow": "pages-build-deployment"
-  },
-  {
-   "repo": "venda-no-azul",
    "workflow": "pages-build-deployment"
   }
  ],
@@ -161,37 +82,13 @@
    "url": "https://ao-formation.jalonel.com/"
   },
   {
-   "url": "https://lot-repere.jalonel.com/"
-  },
-  {
-   "url": "https://dollar-filer.jalonel.com/"
+   "url": "https://ao-formation.jalonel.com/secteurs/"
   },
   {
    "url": "https://accessibilite.jalonel.com/"
   },
   {
-   "url": "https://dpdp.jalonel.com/"
-  },
-  {
-   "url": "https://puntal.jalonel.com/"
-  },
-  {
    "url": "https://gpsr.jalonel.com/"
-  },
-  {
-   "url": "https://appseuil.jalonel.com/"
-  },
-  {
-   "url": "https://sans-tic.jalonel.com/"
-  },
-  {
-   "url": "https://candado.jalonel.com/"
-  },
-  {
-   "url": "https://charte-ia.jalonel.com/"
-  },
-  {
-   "url": "https://venda.jalonel.com/"
   },
   {
    "url": "https://visibilite-ia.jalonel.com/"
@@ -200,13 +97,7 @@
    "url": "https://handa.jalonel.com/"
   },
   {
-   "url": "https://deutschdrill.jalonel.com/"
-  },
-  {
    "url": "https://qualiopi.jalonel.com/"
-  },
-  {
-   "url": "https://pieces-en-ordre.jalonel.com/"
   },
   {
    "url": "https://tcf-canada.jalonel.com/"

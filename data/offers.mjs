@@ -4,41 +4,37 @@
 // lang: language of the site itself.
 export const ORIGIN = 'https://jalonel.com';
 
-// Home page: navigation by need (« Je dois… », JALONEL-HUB-02, 2026-10-19). Needs and the sites inside each need are in
-// descending order of reliable views (Stats, 11–18/10/2026, octave-asset-ventures cro/FUNNEL-2026-10-18.md) given in
-// `views`; two needs within 10 % of each other are ordered by cro/PORTFOLIO-FOCUS.md (France compliance before
-// calculators). short: label in the hero index (« Je dois… »); task: what the visitor wants to get done, used as the card title (link text).
+// Home page: navigation by need (« Je dois… », JALONEL-HUB-02, 2026-10-19). 2026-10-24 (founders' decision, refocus,
+// cro/PORTFOLIO-FOCUS.md): the first need holds the 5 priority sites in the order of the decision (ao-afrique, qualiopi,
+// ao-formation, accessibilite, gpsr); the other needs hold the sites kept online until their 10/11 threshold, and handa,
+// by descending reliable views (`views`). Lot Repéré is merged into ao-formation (no card). The paused sites are in PAUSED,
+// shown in a discreet « En pause » list after the needs (no card, no cta_click).
+// short: label in the hero index (« Je dois… »); task: what the visitor wants to get done, used as the card title (link text).
+export const PRIORITY = 'principal';
 export const NEEDS = [
-  { id: 'ao', short: ['trouver un appel d’offres', 'find a tender'], fr: ['trouver un appel d’offres public', 'Avis du BOAMP, de TED et des marchés publics marocains, mis à jour deux fois par jour.'],
-    en: ['find a public tender', 'Notices from BOAMP, TED and Moroccan public procurement, refreshed twice a day.'],
-    sites: ['ao-afrique', 'lot-repere', 'ao-formation'] },
-  { id: 'conformite', short: ['me mettre en conformité', 'comply with a French rule'], fr: ['me mettre en conformité en France', 'Qualiopi, sécurité des produits, accessibilité numérique, usage de l’IA au travail.'],
-    en: ['comply with a French rule', 'Qualiopi, product safety, digital accessibility, AI at work. Sites in French.'],
-    sites: ['charte-ia', 'gpsr', 'qualiopi', 'accessibilite'] },
-  { id: 'calcul', short: ['calculer un prix ou un impôt', 'work out a price or a tax'], fr: ['calculer un prix, un budget ou un impôt', 'Impôt au Nigeria, prix de vente au Brésil, budget publicitaire d’une app.'],
-    en: ['work out a price, a budget or a tax', 'Income tax in Nigeria, selling prices in Brazil, an app’s ad budget.'],
-    sites: ['dollar-filer', 'appseuil', 'venda'] },
-  { id: 'texte', short: ['relire un texte, protéger ma marque', 'check a text or my brand'], fr: ['relire un texte ou surveiller ma marque', 'Tics d’écriture, délais d’opposition, réponses des assistants IA sur votre entreprise.'],
-    en: ['check a text or watch my brand', 'Writing tics, trademark opposition deadlines, what AI assistants say about your company.'],
-    sites: ['sans-tic', 'marques', 'visibilite-ia'] },
-  { id: 'examen', short: ['préparer un examen', 'prepare for an exam'], fr: ['préparer un examen', 'TCF Canada, allemand (Goethe, telc), fonction publique philippine.'],
-    en: ['prepare for an exam', 'TCF Canada, German (Goethe, telc), the Philippine civil service.'],
-    sites: ['handa', 'tcf-canada', 'deutschdrill'] },
-  { id: 'etranger', short: ['respecter une loi à l’étranger', 'comply with a law abroad'], fr: ['respecter une loi hors de France', 'Données personnelles au Chili et en Inde, sécurité au travail en Colombie.'],
-    en: ['comply with a law outside France', 'Personal data in Chile and India, workplace safety in Colombia.'],
-    sites: ['candado', 'puntal', 'dpdp'] },
-  { id: 'demarches', short: ['comprendre un courrier, un visa', 'read a letter, file a visa'], fr: ['comprendre un courrier ou monter un dossier de visa', 'Délais, pièces à fournir et liens vers les sites officiels.'],
-    en: ['understand a letter or prepare a visa file', 'Deadlines, documents to provide and links to the official sites. In French.'],
-    sites: ['pieces-en-ordre', 'courrier'] },
+  { id: PRIORITY, short: ['trouver un appel d’offres, me mettre en conformité', 'find a tender, comply with a rule'],
+    fr: ['trouver un appel d’offres ou me mettre en conformité', 'Marchés publics en Afrique et en France, Qualiopi V10, accessibilité numérique, sécurité des produits.'],
+    en: ['find a tender or comply with a rule', 'Public tenders in Africa and France, Qualiopi V10, digital accessibility, product safety. Sites in French.'],
+    sites: ['ao-afrique', 'qualiopi', 'ao-formation', 'accessibilite', 'gpsr'] },
+  { id: 'examen', short: ['préparer un examen', 'prepare for an exam'], fr: ['préparer un examen', 'TCF Canada, fonction publique philippine.'],
+    en: ['prepare for an exam', 'TCF Canada, the Philippine civil service.'],
+    sites: ['handa', 'tcf-canada'] },
+  { id: 'texte', short: ['surveiller ma marque', 'watch my brand'], fr: ['surveiller ma marque ou ce que l’IA dit de moi', 'Délais d’opposition, réponses des assistants IA sur votre entreprise.'],
+    en: ['watch my brand or what AI says about me', 'Trademark opposition deadlines, what AI assistants say about your company.'],
+    sites: ['marques', 'visibilite-ia'] },
+  { id: 'demarches', short: ['comprendre un courrier', 'read an official letter'], fr: ['comprendre un courrier administratif', 'Délais, démarches et liens vers les sites officiels.'],
+    en: ['understand an official letter', 'Deadlines, steps and links to the official sites. In French.'],
+    sites: ['courrier'] },
 ];
+// Paused on 2026-10-24 (noindex, « Ce service est en pause. » banner, new requests closed; pages and tracking kept).
+export const PAUSED = ['sans-tic', 'dollar-filer', 'appseuil', 'charte-ia', 'venda', 'pieces-en-ordre', 'candado', 'puntal', 'deutschdrill', 'dpdp'];
 // Reliable views 11–18/10/2026 (Stats), the sort key of NEEDS.
-export const VIEWS = { 'ao-afrique': 75, 'sans-tic': 30, 'dollar-filer': 28, appseuil: 24, 'charte-ia': 23, 'lot-repere': 22, gpsr: 17, qualiopi: 15,
+export const VIEWS = { 'ao-afrique': 75, 'sans-tic': 30, 'dollar-filer': 28, appseuil: 24, 'charte-ia': 23, gpsr: 17, qualiopi: 15,
   venda: 13, handa: 13, 'ao-formation': 12, 'pieces-en-ordre': 12, candado: 12, puntal: 10, courrier: 10, marques: 9, accessibilite: 9, 'tcf-canada': 9,
   'visibilite-ia': 7, deutschdrill: 7, dpdp: 6 };
 export const TASKS = {
   'ao-afrique': ['Trouver un appel d’offres public au Maroc', 'Find an open public tender in Morocco'],
-  'lot-repere': ['Trouver un marché de nettoyage, d’espaces verts ou de sécurité', 'Find French cleaning, landscaping or security tenders'],
-  'ao-formation': ['Trouver un marché public de formation', 'Find French public training tenders'],
+  'ao-formation': ['Trouver un marché public de formation, de nettoyage, d’espaces verts ou de sécurité', 'Find French public tenders in training, cleaning, landscaping or security'],
   'charte-ia': ['Rédiger la charte IA de votre entreprise', 'Write your company’s AI use policy'],
   gpsr: ['Rédiger la fiche de sécurité d’un produit (GPSR)', 'Write a GPSR product safety sheet'],
   qualiopi: ['Préparer l’audit Qualiopi V10', 'Prepare the Qualiopi V10 audit'],
@@ -64,8 +60,8 @@ export const SITES = [
     fr: 'Check-list des 33 indicateurs du référentiel applicable au 1er novembre 2026, tableau V9 → V10, modèles Word et LibreOffice. Échantillon gratuit, kit à 129 € net.',
     en: 'Checklist of the 33 indicators of the French Qualiopi framework in force on 1 November 2026, V9 → V10 table, Word and LibreOffice templates. Free sample; kit €129.' },
   { repo: 'veille-ao-formation', sub: 'ao-formation', group: 'fr-of', lang: 'fr', name: 'Veille appels d’offres formation',
-    fr: 'Appels d’offres publics de formation ouverts (BOAMP et TED), liste gratuite mise à jour deux fois par jour. Alertes e-mail chaque matin dès 49 € net pour 3 mois.',
-    en: 'Open French public training tenders (BOAMP and TED), free list refreshed twice a day. Morning e-mail alerts from €49 for 3 months.' },
+    fr: 'Appels d’offres publics ouverts (BOAMP et TED) en formation, nettoyage, espaces verts et sécurité privée, liste gratuite mise à jour deux fois par jour. Alertes e-mail chaque matin dès 49 € net pour 3 mois.',
+    en: 'Open French public tenders (BOAMP and TED) in training, cleaning, landscaping and private security, free list refreshed twice a day. Morning e-mail alerts from €49 for 3 months.' },
   { repo: 'kit-gpsr-vendeurs', sub: 'gpsr', group: 'fr-vendeurs', lang: 'fr', name: 'Kit GPSR Vendeurs',
     fr: 'Fiche de sécurité produit, texte d’étiquette et checklists du règlement (UE) 2023/988, générés dans votre navigateur. Gratuit ; pack de modèles à 29 € net.',
     en: 'Product safety sheet, label text and checklists for Regulation (EU) 2023/988, generated in your browser. Free; template pack €29.' },
@@ -84,9 +80,6 @@ export const SITES = [
   { repo: 'veille-marques', sub: 'marques', group: 'fr-pme', lang: 'fr', name: 'Vigie Marques',
     fr: 'Surveiller sa marque soi-même : délais d’opposition INPI et EUIPO, recherches dans les bases officielles, alertes gratuites.',
     en: 'Watch your own trademark: INPI and EUIPO opposition deadlines, searches in the official databases, free alerts.' },
-  { repo: 'lot-repere', sub: 'lot-repere', group: 'fr-pme', lang: 'fr', name: 'Lot Repéré',
-    fr: 'Appels d’offres ouverts en nettoyage, espaces verts et sécurité privée (BOAMP et TED), filtrés par secteur et région. Alertes e-mail dès 49 € net.',
-    en: 'Open French tenders in cleaning, landscaping and private security (BOAMP and TED), by sector and region. E-mail alerts from €49.' },
   { repo: 'sans-tic', sub: 'sans-tic', group: 'fr-pme', lang: 'fr', name: 'Sans Tic',
     fr: 'Relève 64 tics d’écriture fréquents dans les textes générés, en français, donne un score sur 100 et explique chaque correction. Le texte reste dans votre navigateur.',
     en: 'Flags 64 writing tics common in generated French text, scores it out of 100 and explains each fix. The text stays in your browser.' },

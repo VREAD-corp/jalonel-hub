@@ -9,7 +9,7 @@ import path from 'node:path';
 import assert from 'node:assert/strict';
 import { fileURLToPath } from 'node:url';
 import { build, API, HOSTS } from '../tools/build.mjs';
-import { SITES, NEEDS, VIEWS, TASKS } from '../data/offers.mjs';
+import { SITES, NEEDS, VIEWS, TASKS, PAUSED, PRIORITY } from '../data/offers.mjs';
 
 const root = path.join(path.dirname(fileURLToPath(import.meta.url)), '..');
 const read = (f) => fs.readFileSync(path.join(root, f), 'utf8');
@@ -44,18 +44,27 @@ for (const f of ['index.html', 'en/index.html']) {
 }
 // Home by need (JALONEL-HUB-02): every site in exactly one need, with a task title and its baseline views; sites inside a
 // need by descending views; needs by descending total views, except two needs within 10 % of each other (portfolio order).
+// 2026-10-24: the first need is the founders' priority list (fixed order, not by views); paused sites are in no need.
 const placed = NEEDS.flatMap((n) => n.sites);
-assert.deepEqual([...placed].sort(), SITES.map((s) => s.sub).sort(), 'each site in exactly one need');
+assert.deepEqual([...placed, ...PAUSED].sort(), SITES.map((s) => s.sub).sort(), 'each site in exactly one need or paused');
+assert.equal(NEEDS[0].id, PRIORITY, 'priority need first');
+assert.deepEqual(NEEDS[0].sites, ['ao-afrique', 'qualiopi', 'ao-formation', 'accessibilite', 'gpsr'], 'priority sites, decision order');
+assert.ok(!SITES.some((s) => s.sub === 'lot-repere'), 'lot-repere merged into ao-formation');
 for (const s of SITES) { assert.ok(TASKS[s.sub]?.[0] && TASKS[s.sub]?.[1], s.sub + ': task fr/en'); assert.ok(Number.isFinite(VIEWS[s.sub]), s.sub + ': baseline views'); }
 const tot = (n) => n.sites.reduce((t, x) => t + VIEWS[x], 0);
 NEEDS.forEach((n, i) => {
+  if (n.id === PRIORITY) return;
   for (let j = 1; j < n.sites.length; j++) assert.ok(VIEWS[n.sites[j - 1]] >= VIEWS[n.sites[j]], n.id + ': sites by views');
-  if (i) assert.ok(tot(NEEDS[i - 1]) >= tot(n) * 0.9, n.id + ': needs by views');
+  if (i > 1) assert.ok(tot(NEEDS[i - 1]) >= tot(n) * 0.9, n.id + ': needs by views');
 });
 for (const f of ['index.html', 'en/index.html']) {
   const h = read(f);
   const cards = [...h.matchAll(/<li class="card"[^>]*>([\s\S]*?)<\/li>/g)].map((m) => m[1]);
-  assert.equal(cards.length, SITES.length, f + ': one card per site');
+  assert.equal(cards.length, SITES.length - PAUSED.length, f + ': one card per active site');
+  const paused = h.split('id="en-pause"')[1]?.split('</section>')[0] || '';
+  for (const sub of PAUSED) assert.ok(paused.includes(`https://${sub}.jalonel.com/`) && !paused.includes('data-mesure'), f + ': paused ' + sub);
+  assert.ok(h.indexOf('data-site="ao-afrique"') < h.indexOf('data-site="qualiopi"') && h.indexOf('data-site="gpsr"') < h.indexOf('data-site="marques"'), f + ': priority cards first');
+  assert.ok(!h.includes('lot-repere'), f + ': no lot-repere');
   for (const c of cards) {
     const links = c.match(/<a [^>]*>/g) || [];
     assert.equal(links.length, 1, f + ': one link per card (whole card clickable)');
